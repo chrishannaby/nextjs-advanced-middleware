@@ -13,15 +13,25 @@ export async function middleware(NextRequest) {
       response.replaceText("#price", discountedPrice);
       response.transformData((data) => {
         data.pageProps.product.price = discountedPrice;
-        console.log(data);
         return data;
+      });
+    }
+  }
+  if (NextRequest.nextUrl.pathname.startsWith("/product")) {
+    const personalize = Boolean(
+      NextRequest.nextUrl.searchParams.get("personalize")
+    );
+    if (personalize) {
+      response.setPageProp("personalized", {
+        product: {
+          name: "Personalized Product",
+        },
       });
     }
   }
 
   if (NextRequest.nextUrl.pathname === "/more-complex-example") {
     const bucket = Math.random();
-    console.log(bucket);
     if (bucket < 0.5) {
       response.setPageProp("discountedPrice", "$100");
     }
