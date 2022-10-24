@@ -1,13 +1,11 @@
 import Head from "next/head";
-import Image from "next/image";
-import { Fragment, useState } from "react";
-import { Dialog, RadioGroup } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
+import { RadioGroup } from "@headlessui/react";
 import { StarIcon } from "@heroicons/react/20/solid";
 
 const productData = {
   name: "Basic Tee 6-Pack ",
-  price: "$192",
+  price: "192",
   rating: 3.9,
   reviewCount: 117,
   href: "#",
@@ -83,7 +81,7 @@ function Product({ product }) {
                   </h3>
 
                   <p id="price" className="text-2xl text-gray-900">
-                    {product.price}
+                    ${product.price}
                   </p>
 
                   {/* Reviews */}
