@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RadioGroup } from "@headlessui/react";
 import { StarIcon } from "@heroicons/react/20/solid";
 
@@ -33,15 +33,27 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+const useHydrated = () => {
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  return hydrated;
+};
+
 export function getStaticProps() {
   return {
     props: {
       product: productData,
+      discountedPrice: null,
     },
   };
 }
 
-export default function Home({ product }) {
+export default function Home({ product, discountedPrice }) {
+  const hydrated = useHydrated();
+
   return (
     <div>
       <Head>
@@ -50,7 +62,16 @@ export default function Home({ product }) {
       </Head>
       <Product product={product}>
         <p id="price" className="text-2xl text-gray-900">
-          {product.price}
+          <span
+            className={
+              hydrated && discountedPrice ? "text-gray-400 line-through" : ""
+            }
+          >
+            {product.price}
+          </span>
+          {hydrated && discountedPrice && (
+            <span className="ml-2">{discountedPrice}</span>
+          )}
         </p>
       </Product>
     </div>
@@ -83,7 +104,6 @@ function Product({ children, product }) {
                   <h3 id="information-heading" className="sr-only">
                     Product information
                   </h3>
-
                   {children}
 
                   {/* Reviews */}
